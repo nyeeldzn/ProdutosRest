@@ -20,7 +20,8 @@ public class Product implements Serializable {
     String description;
     @NonNull
     float price;
-    //estoque loja
+    @NonNull
+    int stock;
     @NonNull
     @DateTimeFormat
     Date created_date;
