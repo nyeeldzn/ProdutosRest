@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Product implements Serializable {
@@ -30,11 +31,12 @@ public class Product implements Serializable {
 
     }
 
-    public Product(float id, int barcode, @NonNull String description, float price) {
+    public Product(float id, int barcode, @NonNull String description, float price, int stock) {
         this.id = id;
         this.barcode = barcode;
         this.description = description;
         this.price = price;
+        this.stock = stock;
         this.created_date = new Date();
     }
 
@@ -63,6 +65,14 @@ public class Product implements Serializable {
         this.price = price;
     }
 
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
     @NonNull
     public Date getCreated_date() {
         return created_date;
@@ -70,5 +80,30 @@ public class Product implements Serializable {
 
     public void setCreated_date(@NonNull Date created_date) {
         this.created_date = created_date;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id + '\'' +
+                ", barcode=" + barcode +'\''+
+                ", description='" + description + '\'' +
+                ", price=" + price +'\''+
+                ", stock=" + stock +'\''+
+                ", created_date=" + created_date +'\''+
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Float.compare(product.id, id) == 0 && barcode == product.barcode && Float.compare(product.price, price) == 0 && stock == product.stock && description.equals(product.description) && created_date.equals(product.created_date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, barcode, description, price, stock, created_date);
     }
 }
