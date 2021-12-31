@@ -4,9 +4,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -14,15 +17,16 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    float id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     @NonNull
-    int barcode;
+    Long barcode;
     @NonNull
     String description;
     @NonNull
-    float price;
+    Double price;
     @NonNull
-    int stock;
+    Long stock;
     @NonNull
     @DateTimeFormat
     Date created_date;
@@ -31,20 +35,28 @@ public class Product implements Serializable {
 
     }
 
-    public Product(float id, int barcode, @NonNull String description, float price, int stock) {
+    public Product(Long id, Long barcode, @NonNull String description, Double price, Long stock) {
         this.id = id;
         this.barcode = barcode;
-        this.description = description;
+        this.description = description.toUpperCase(Locale.ROOT).trim();
         this.price = price;
         this.stock = stock;
         this.created_date = new Date();
     }
 
-    public int getBarcode() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getBarcode() {
         return barcode;
     }
 
-    public void setBarcode(int barcode) {
+    public void setBarcode(Long barcode) {
         this.barcode = barcode;
     }
 
@@ -57,19 +69,19 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getStock() {
+    public Long getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Long stock) {
         this.stock = stock;
     }
 
@@ -99,7 +111,7 @@ public class Product implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Float.compare(product.id, id) == 0 && barcode == product.barcode && Float.compare(product.price, price) == 0 && stock == product.stock && description.equals(product.description) && created_date.equals(product.created_date);
+        return Objects.equals(id, product.id) && barcode.equals(product.barcode) && description.equals(product.description) && price.equals(product.price) && stock.equals(product.stock) && created_date.equals(product.created_date);
     }
 
     @Override
